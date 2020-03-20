@@ -28,19 +28,19 @@ class MortalityTracking < ApplicationRecord
   include Raw
 
   HEADERS = {
-    MORTALITY_DATE: "Mortality_date",
-    COHORT: "Cohort",
-    SHL_CASE_NUMBER: "SHL number",
-    SPAWNING_DATE: "Spawning_date",
-    SHELL_BOX: "Shell_box",
-    SHELL_CONTAINER: "Shell_container",
-    ANIMAL_LOCATION: "Animal_location",
+    MORTALITY_DATE: 'Mortality_date',
+    COHORT: 'Cohort',
+    SHL_CASE_NUMBER: 'SHL number',
+    SPAWNING_DATE: 'Spawning_date',
+    SHELL_BOX: 'Shell_box',
+    SHELL_CONTAINER: 'Shell_container',
+    ANIMAL_LOCATION: 'Animal_location',
     NUMBER_MORTS: "\# Morts",
-    APPROXIMATION: "Approximation?",
-    PROCESSED_BY_SHL: "Processed by SHL?",
-    INITIALS: "Initials",
-    TAGS: "Tag(s)",
-    COMMENTS: "Comments"
+    APPROXIMATION: 'Approximation?',
+    PROCESSED_BY_SHL: 'Processed by SHL?',
+    INITIALS: 'Initials',
+    TAGS: 'Tag(s)',
+    COMMENTS: 'Comments'
   }.freeze
 
   def self.create_from_csv_data(attrs)
@@ -52,8 +52,10 @@ class MortalityTracking < ApplicationRecord
     #
     # Note - DateTime.strptime will raise a ArgumentError
     # if there is a issue converting.
-    attrs[:spawning_date] = DateTime.strptime(attrs.delete(:spawning_date), '%m/%d/%y')
-    attrs[:mortality_date] = DateTime.strptime(attrs.delete(:mortality_date), '%m/%d/%y')
+    attrs[:spawning_date] =
+      DateTime.strptime(attrs.delete(:spawning_date), '%m/%d/%y')
+    attrs[:mortality_date] =
+      DateTime.strptime(attrs.delete(:mortality_date), '%m/%d/%y')
 
     new(attrs)
   end

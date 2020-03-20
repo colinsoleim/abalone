@@ -5,9 +5,7 @@ describe FileUploadsController do
 
   let(:user) { FactoryBot.create(:user) }
 
-  before do
-    sign_in user
-  end
+  before { sign_in user }
 
   describe '#upload' do
     it 'should upload multiple files successfully' do
@@ -25,8 +23,9 @@ describe FileUploadsController do
       post :upload, params: invalid_header_file_params
 
       expect(response.code).to eq '200'
-      expect(assigns[:file_uploads][0].result_message)
-        .to include 'Invalid category'
+      expect(
+        assigns[:file_uploads][0].result_message
+      ).to include 'Invalid category'
     end
 
     it 'should give an error message if no CSV is uploaded' do
@@ -79,9 +78,6 @@ describe FileUploadsController do
   end
 
   def invalid_file_params
-    {
-      'category': 'PopulationEstimate',
-      'input_files': []
-    }
+    { 'category': 'PopulationEstimate', 'input_files': [] }
   end
 end

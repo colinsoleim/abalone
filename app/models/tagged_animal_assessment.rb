@@ -29,29 +29,31 @@ class TaggedAnimalAssessment < ApplicationRecord
   include Raw
 
   HEADERS = {
-    MEASUREMENT_DATE: "Measurement_date",
-    SHL_CASE_NUMBER: "SHL_case_number",
-    SPAWNING_DATE: "Spawning_date",
-    TAG: "Tag",
-    FROM_GROWOUT_RACK: "From_Growout_Rack",
-    FROM_GROWOUT_COLUMN: "From_Growout_Column",
-    FROM_GROWOUT_TROUGH: "From_Growout_Trough",
-    TO_GROWOUT_RACK: "To_Growout_Rack",
-    TO_GROWOUT_COLUMN: "To_Growout_Column",
-    TO_GROWOUT_TROUGH: "To_Growout_Trough",
-    LENGTH: "Length",
-    GONAD_SCORE: "Gonad_Score",
-    PREDICTED_SEX: "Predicted_Sex",
-    NOTES: "Notes"
+    MEASUREMENT_DATE: 'Measurement_date',
+    SHL_CASE_NUMBER: 'SHL_case_number',
+    SPAWNING_DATE: 'Spawning_date',
+    TAG: 'Tag',
+    FROM_GROWOUT_RACK: 'From_Growout_Rack',
+    FROM_GROWOUT_COLUMN: 'From_Growout_Column',
+    FROM_GROWOUT_TROUGH: 'From_Growout_Trough',
+    TO_GROWOUT_RACK: 'To_Growout_Rack',
+    TO_GROWOUT_COLUMN: 'To_Growout_Column',
+    TO_GROWOUT_TROUGH: 'To_Growout_Trough',
+    LENGTH: 'Length',
+    GONAD_SCORE: 'Gonad_Score',
+    PREDICTED_SEX: 'Predicted_Sex',
+    NOTES: 'Notes'
   }.freeze
 
   # this is used to dynamically define argument setter for these attributes
-  DATE_ATTRIBUTES = %w[
-    measurement_date
-    spawning_date
-  ].freeze
+  DATE_ATTRIBUTES = %w[measurement_date spawning_date].freeze
 
-  validates :measurement_date, :shl_case_number, :spawning_date, :tag, :length, presence: true
+  validates :measurement_date,
+            :shl_case_number,
+            :spawning_date,
+            :tag,
+            :length,
+            presence: true
   validates :length, numericality: true
 
   def self.create_from_csv_data(attrs)
@@ -63,15 +65,21 @@ class TaggedAnimalAssessment < ApplicationRecord
       return unless argument
 
       begin
-        write_attribute(name.to_sym, DateTime.strptime(argument, "%m/%d/%y"))
+        write_attribute(name.to_sym, DateTime.strptime(argument, '%m/%d/%y'))
       rescue ArgumentError
-        errors.add(name.to_sym, :invalid, message: "Invalid date format: #{argument}")
+        errors.add(
+          name.to_sym,
+          :invalid,
+          message: "Invalid date format: #{argument}"
+        )
       end
     end
   end
 
   def self.lengths_for_measurement(processed_file_id)
-    select(:length).where(processed_file_id: processed_file_id).map { |record| record.length.to_f }
+    select(:length).where(processed_file_id: processed_file_id).map do |record|
+      record.length.to_f
+    end
   end
 
   def cleanse_data!

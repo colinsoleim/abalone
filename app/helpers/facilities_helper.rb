@@ -1,2 +1,1 @@
-module FacilitiesHelper
-end
+module FacilitiesHelper; end

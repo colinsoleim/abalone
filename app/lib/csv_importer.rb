@@ -1,5 +1,9 @@
 class CsvImporter
-  attr_reader :stats, :model, :temporary_file, :processed_file_id, :error_details
+  attr_reader :stats,
+              :model,
+              :temporary_file,
+              :processed_file_id,
+              :error_details
 
   CATEGORIES = [
     'Spawning Success',
@@ -35,7 +39,8 @@ class CsvImporter
     row_number = 2 # assuming 1 is headers
 
     model.transaction do
-      CSV.parse(temporary_file, headers: true, header_converters: :symbol).each do |csv_row|
+      CSV.parse(temporary_file, headers: true, header_converters: :symbol)
+        .each do |csv_row|
         csv_row[:processed_file_id] = processed_file_id
         csv_row[:raw] = false
         record = model.create_from_csv_data(csv_row.to_h)
@@ -66,9 +71,12 @@ class CsvImporter
 
   def increment_stats(model)
     stats[:row_count] += 1
+
     if model.persisted?
       stats[:rows_imported] += 1
-      stats[:shl_case_numbers][model.shl_case_number] += 1 if model.respond_to?(:shl_case_number)
+      if model.respond_to?(:shl_case_number)
+        stats[:shl_case_numbers][model.shl_case_number] += 1
+      end
     else
       stats[:rows_not_imported] += 1
     end

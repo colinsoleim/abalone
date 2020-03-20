@@ -2,7 +2,10 @@
 class FileUploader
   attr_accessor :category, :input_file, :filename, :reference, :result_message
 
-  FILE_UPLOAD_CATEGORIES = CsvImporter::CATEGORIES.map { |category| [category, category.delete(' ')] }.freeze
+  FILE_UPLOAD_CATEGORIES =
+    CsvImporter::CATEGORIES.map do |category|
+      [category, category.delete(' ')]
+    end.freeze
 
   def initialize(category:, input_file:)
     @category = category
@@ -24,7 +27,8 @@ class FileUploader
     self.filename = input_file.original_filename
     job_class = [category, 'Job'].join
     job_class.constantize.perform_later(temporary_file, filename)
-    self.result_message = "Successfully queued spreadsheet for import as a #{job_class}."
+    self.result_message =
+      "Successfully queued spreadsheet for import as a #{job_class}."
   rescue StandardError => e
     self.result_message = "Error: File could not be uploaded: #{e.message}"
   end

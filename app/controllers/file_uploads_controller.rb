@@ -7,9 +7,10 @@ class FileUploadsController < ApplicationController
   #
   # Ex: Selecting "Spawning Success" in the form will post "SpawningSuccess"
   # and process the data with a SpawningSuccessJob.
-  FILE_UPLOAD_CATEGORIES = CsvImporter::CATEGORIES.map do |category|
-    [category, category.delete(' ')]
-  end.freeze
+  FILE_UPLOAD_CATEGORIES =
+    CsvImporter::CATEGORIES.map do |category|
+      [category, category.delete(' ')]
+    end.freeze
 
   def index
     @processed_files = ProcessedFile.all.order(updated_at: :desc).first(20)
@@ -30,10 +31,9 @@ class FileUploadsController < ApplicationController
     @file_uploads = []
 
     input_files.each do |input_file|
-      @file_uploads << FileUploader.new(
-        category: params[:category],
-        input_file: input_file
-      ).process
+      @file_uploads <<
+        FileUploader.new(category: params[:category], input_file: input_file)
+          .process
     end
   rescue NoMethodError
     head :bad_request

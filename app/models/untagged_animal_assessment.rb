@@ -24,24 +24,23 @@
 
 class UntaggedAnimalAssessment < ApplicationRecord
   HEADERS = {
-    MEASUREMENT_DATE: "Measurement_date",
-    COHORT: "Cohort",
-    SPAWNING_DATE: "Spawning_date",
-    GROWOUT_RACK: "Growout_Rack",
-    GROWOUT_COLUMN: "Growout_Column",
-    GROWOUT_TROUGH: "Growout_Trough",
-    LENGTH: "Length", # (mm)
-    MASS: "Mass", # (g)
-    GONAD_SCORE: "Gonad Score",
-    PREDICTED_SEX: "Predicted Sex",
-    NOTES: "Notes"
+    MEASUREMENT_DATE: 'Measurement_date',
+    COHORT: 'Cohort',
+    SPAWNING_DATE: 'Spawning_date',
+    GROWOUT_RACK: 'Growout_Rack',
+    GROWOUT_COLUMN: 'Growout_Column',
+    GROWOUT_TROUGH: 'Growout_Trough',
+    LENGTH: 'Length',
+    # (mm)
+    MASS: 'Mass',
+    # (g)
+    GONAD_SCORE: 'Gonad Score',
+    PREDICTED_SEX: 'Predicted Sex',
+    NOTES: 'Notes'
   }.freeze
 
   # this is used to dynamically define argument setter for these attributes
-  DATE_ATTRIBUTES = %w[
-    measurement_date
-    spawning_date
-  ].freeze
+  DATE_ATTRIBUTES = %w[measurement_date spawning_date].freeze
 
   validates(
     :measurement_date,
@@ -50,7 +49,8 @@ class UntaggedAnimalAssessment < ApplicationRecord
     :growout_trough,
     :growout_rack,
     :growout_column,
-    :length, presence: true
+    :length,
+    presence: true
   )
   validates :length, numericality: true
 
@@ -73,15 +73,21 @@ class UntaggedAnimalAssessment < ApplicationRecord
       return unless argument
 
       begin
-        write_attribute(name.to_sym, DateTime.strptime(argument, "%m/%d/%y"))
+        write_attribute(name.to_sym, DateTime.strptime(argument, '%m/%d/%y'))
       rescue ArgumentError
-        errors.add(name.to_sym, :invalid, message: "Invalid date format: #{argument}")
+        errors.add(
+          name.to_sym,
+          :invalid,
+          message: "Invalid date format: #{argument}"
+        )
       end
     end
   end
 
   def self.lengths_for_measurement(processed_file_id)
-    select(:length).where(processed_file_id: processed_file_id).map { |record| record.length.to_f }
+    select(:length).where(processed_file_id: processed_file_id).map do |record|
+      record.length.to_f
+    end
   end
 
   def cleanse_data!

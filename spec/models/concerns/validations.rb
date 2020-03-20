@@ -6,7 +6,12 @@ end
 
 shared_examples_for 'a required field' do |field_name|
   it "cannot be saved without #{field_name}" do
-    expect { described_class.create!(valid_attributes.except(field_name)) }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: #{field_name.to_s.humanize} can't be blank")
+    expect {
+      described_class.create!(valid_attributes.except(field_name))
+    }.to raise_error(
+      ActiveRecord::RecordInvalid,
+      "Validation failed: #{field_name.to_s.humanize} can't be blank"
+    )
   end
 end
 
@@ -26,7 +31,10 @@ shared_examples_for 'a numeric field' do |field_name|
   it "only accepts numbers for #{field_name}" do
     valid_attributes[field_name] = 'a'
 
-    expect { described_class.create!(valid_attributes) }.to raise_error(ActiveRecord::RecordInvalid, "Validation failed: #{field_name.to_s.humanize} is not a number")
+    expect { described_class.create!(valid_attributes) }.to raise_error(
+      ActiveRecord::RecordInvalid,
+      "Validation failed: #{field_name.to_s.humanize} is not a number"
+    )
   end
 end
 

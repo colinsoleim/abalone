@@ -13,24 +13,34 @@ module ImportJob
     @filename = args[1]
     initialize_processed_file(temporary_file, filename)
     if already_processed?
-      fail_processed_file("Already processed a file on #{already_processed_file.first.created_at.strftime('%m/%d/%Y')} with the same name: #{filename}. Data not imported!")
+      fail_processed_file(
+        "Already processed a file on #{
+          already_processed_file.first.created_at.strftime('%m/%d/%Y')
+        } with the same name: #{filename}. Data not imported!"
+      )
     elsif validate_headers(temporary_file)
       if import_records(temporary_file)
         complete_processed_file!
       else
-        log("Error: #{filename} does not have valid row(s). Data not imported!", :error)
-        fail_processed_file("Does not have valid row(s). Data not imported!")
+        log(
+          "Error: #{filename} does not have valid row(s). Data not imported!",
+          :error
+        )
+        fail_processed_file('Does not have valid row(s). Data not imported!')
       end
     else
-      log("Error: #{filename} does not have valid header(s). Data not imported!", :error)
-      fail_processed_file("Does not have valid header(s). Data not imported!")
+      log(
+        "Error: #{filename} does not have valid header(s). Data not imported!",
+        :error
+      )
+      fail_processed_file('Does not have valid header(s). Data not imported!')
     end
 
     @processed_file.save
   end
 
   def validate_headers(temporary_file)
-    raise "No input file specified" unless temporary_file
+    raise 'No input file specified' unless temporary_file
 
     headers = CSV.parse(temporary_file.contents, headers: true).headers.compact
     valid_headers = category_model::HEADERS.values
@@ -41,9 +51,14 @@ module ImportJob
   end
 
   def import_records(temporary_file)
-    raise "No input file specified" unless temporary_file
+    raise 'No input file specified' unless temporary_file
 
-    csv_importer = CsvImporter.new(temporary_file.contents, category_model.name.underscore.humanize.titleize, @processed_file.id)
+    csv_importer =
+      CsvImporter.new(
+        temporary_file.contents,
+        category_model.name.underscore.humanize.titleize,
+        @processed_file.id
+      )
     csv_importer.call
 
     if csv_importer.errored?
@@ -70,15 +85,20 @@ module ImportJob
   end
 
   def already_processed_file
-    @already_processed_file ||= ProcessedFile.where(status: ['Processed', 'Processed with errors'])
-                                             .where(filename: filename)
+    @already_processed_file ||=
+      ProcessedFile.where(status: ['Processed', 'Processed with errors']).where(
+        filename: filename
+      )
   end
 
   def initialize_processed_file(temporary_file, filename)
-    @processed_file = ProcessedFile.create(temporary_file_id: temporary_file.id,
-                                           filename: filename,
-                                           category: category,
-                                           status: 'Running')
+    @processed_file =
+      ProcessedFile.create(
+        temporary_file_id: temporary_file.id,
+        filename: filename,
+        category: category,
+        status: 'Running'
+      )
   end
 
   def complete_processed_file!
@@ -97,7 +117,9 @@ module ImportJob
   end
 
   def log(message, level = :debug)
-    raise "Wrong logger level: #{level}" unless %i(debug error info).include?(level)
+    unless %i[debug error info].include?(level)
+      raise "Wrong logger level: #{level}"
+    end
 
     logger.send(level, message)
   end

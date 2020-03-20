@@ -5,6 +5,8 @@ FactoryBot.define do
     spawning_date { Time.now }
     mother { Faker::Name.name }
     father { Faker::Name.name }
-    seperate_cross_within_cohort { "F#{rand(0...1e3).to_i}xM#{rand(0...1e3).to_i}" }
+    seperate_cross_within_cohort do
+      "F#{rand(0...1e3).to_i}xM#{rand(0...1e3).to_i}"
+    end
   end
 end

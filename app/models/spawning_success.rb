@@ -21,19 +21,20 @@ class SpawningSuccess < ApplicationRecord
   include Raw
 
   HEADERS = {
-    TAG: "Tag",
-    SHL_CASE_NUMBER: "SHL_number",
-    SPAWNING_DATE: "Spawning_date",
-    DATE_ATTEMPTED: "Date_attempted",
-    SPAWNING_SUCCESS: "Spawning_success",
-    NUMBER_OF_EGGS_SPAWNED: "Number of eggs spawned (if female)"
+    TAG: 'Tag',
+    SHL_CASE_NUMBER: 'SHL_number',
+    SPAWNING_DATE: 'Spawning_date',
+    DATE_ATTEMPTED: 'Date_attempted',
+    SPAWNING_SUCCESS: 'Spawning_success',
+    NUMBER_OF_EGGS_SPAWNED: 'Number of eggs spawned (if female)'
   }.freeze
 
   validates :shl_case_number, presence: true
 
   def self.create_from_csv_data(attrs)
-    attrs[:nbr_of_eggs_spawned] = attrs.delete(:number_of_eggs_spawned_if_female)
-    attrs[:shl_case_number]     = attrs.delete(:shl_number)
+    attrs[:nbr_of_eggs_spawned] =
+      attrs.delete(:number_of_eggs_spawned_if_female)
+    attrs[:shl_case_number] = attrs.delete(:shl_number)
 
     new(attrs)
   end

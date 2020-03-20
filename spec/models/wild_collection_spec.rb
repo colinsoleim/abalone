@@ -74,7 +74,8 @@ RSpec.describe WildCollection, type: :model do
   include_examples 'an optional field', :weight
   include_examples 'an optional field', :gonad_score
   include_examples 'an optional field', :predicted_sex
-  include_examples 'an optional field', :final_holding_facility_and_date_of_arrival
+  include_examples 'an optional field',
+                   :final_holding_facility_and_date_of_arrival
   include_examples 'an optional field', :otc_treatment_completion_date
 
   include_examples 'a numeric field', :collection_depth
@@ -84,55 +85,57 @@ RSpec.describe WildCollection, type: :model do
   describe 'gonad score' do
     include_examples 'validate values for field', :gonad_score do
       let(:valid_values) do
-        [
-          '0', '1', '2', '3',
-          '0?', '1?', '2?', '3?',
-          '0-1', '0-1?', '0-2', '0-2?', '0-3', '0-3?',
-          '1-2', '1-2?', '1-3', '1-3?',
-          '2-3', '2-3?',
-          'NA'
+        %w[
+          0
+          1
+          2
+          3
+          0?
+          1?
+          2?
+          3?
+          0-1
+          0-1?
+          0-2
+          0-2?
+          0-3
+          0-3?
+          1-2
+          1-2?
+          1-3
+          1-3?
+          2-3
+          2-3?
+          NA
         ]
       end
 
-      let(:invalid_values) do
-        ['a', '4', '-2', '?']
-      end
+      let(:invalid_values) { %w[a 4 -2 ?] }
     end
   end
 
   describe 'predicted sex' do
     include_examples 'validate values for field', :predicted_sex do
-      let(:valid_values) do
-        %w[M F M? F?]
-      end
+      let(:valid_values) { %w[M F M? F?] }
 
-      let(:invalid_values) do
-        ['a', 'N', '4', '?']
-      end
+      let(:invalid_values) { %w[a N 4 ?] }
     end
   end
 
   describe 'initial holding facility' do
     include_examples 'validate values for field', :initial_holding_facility do
-      let(:valid_values) do
-        %w[AoP AOP BML]
-      end
+      let(:valid_values) { %w[AoP AOP BML] }
 
-      let(:invalid_values) do
-        %w[NA]
-      end
+      let(:invalid_values) { %w[NA] }
     end
   end
 
   describe 'final holding facility and date of arrival' do
-    include_examples 'validate values for field', :final_holding_facility_and_date_of_arrival do
-      let(:valid_values) do
-        ['AoP; 12/1/18', 'AOP; 1/31/18', 'BML; 1/31/2018']
-      end
+    include_examples 'validate values for field',
+                     :final_holding_facility_and_date_of_arrival do
+      let(:valid_values) { ['AoP; 12/1/18', 'AOP; 1/31/18', 'BML; 1/31/2018'] }
 
-      let(:invalid_values) do
-        %w[AOP 12/1/18]
-      end
+      let(:invalid_values) { %w[AOP 12/1/18] }
     end
   end
 end

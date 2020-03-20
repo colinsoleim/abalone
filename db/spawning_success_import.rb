@@ -2,7 +2,8 @@ filename = 'spawn_newheaders.xlsx'
 filename = Rails.root.join(filename).to_s
 
 def translate_attribute_names(attrs)
-  attrs['nbr_of_eggs_spawned'] = attrs.delete('number_of_eggs_spawned_if_female')
+  attrs['nbr_of_eggs_spawned'] =
+    attrs.delete('number_of_eggs_spawned_if_female')
   attrs
 end
 
