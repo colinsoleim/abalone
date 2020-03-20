@@ -50,8 +50,8 @@ module Aggregates
         hash.each_with_object(0) do |(k, val), rolling_sum|
           if val.count > 1
             raise # calc rolling average
-                  # potential for innacurate calc if they have two measurements on the same day
-                  'Two measurements for the same day'
+            # potential for innacurate calc if they have two measurements on the same day
+            'Two measurements for the same day'
           end
 
           val = val.first
