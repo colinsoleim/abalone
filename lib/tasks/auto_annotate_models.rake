@@ -36,7 +36,7 @@ if Rails.env.development?
       "sort"                    => "false",
       "force"                   => "false",
       "trace"                   => "false",
-      "wrapper_open"            => "rubocop:disable Lint/UnneededCopDisableDirective, Metrics/LineLength",
+      "wrapper_open"            => "rubocop:disable Lint/RedundantCopDisableDirective, Layout/LineLength",
       "wrapper_close"           => "rubocop:enable Metrics/LineLength, Lint/UnneededCopDisableDirective"
     )
   end

@@ -18,7 +18,9 @@ class ReportBuilder
   # a corresponding processed file. For now just returns the first id to work
   # with the existing javascript code. This will probably need to be changed.
   def processed_file_id
-    assessment = find_animal_assessments(shl_case_number: @cohort, measurement_date: @date)&.first
+    assessment =
+      find_animal_assessments(shl_case_number: @cohort, measurement_date: @date)
+        &.first
     assessment&.processed_file_id
   end
 
@@ -28,7 +30,9 @@ class ReportBuilder
   # animal assessment shl_case_numbers that correspond to it.
   def build_cohort_options(date:)
     if date
-      TaggedAnimalAssessment.where(measurement_date: date).pluck(:shl_case_number).uniq
+      TaggedAnimalAssessment.where(measurement_date: date).pluck(
+        :shl_case_number
+      ).uniq
     else
       TaggedAnimalAssessment.pluck(:shl_case_number).uniq
     end
@@ -38,7 +42,9 @@ class ReportBuilder
   # animal assessment measurement_dates that correspond to it.
   def build_date_options(cohort:)
     if cohort
-      TaggedAnimalAssessment.where(shl_case_number: cohort).pluck(:measurement_date).uniq
+      TaggedAnimalAssessment.where(shl_case_number: cohort).pluck(
+        :measurement_date
+      ).uniq
     else
       TaggedAnimalAssessment.pluck(:measurement_date).uniq
     end
@@ -50,7 +56,9 @@ class ReportBuilder
     # Remove any nil values from query_options hash
     query_options.compact!
 
-    return if query_options.empty? || !TaggedAnimalAssessment.exists?(query_options)
+    if query_options.empty? || !TaggedAnimalAssessment.exists?(query_options)
+      return
+    end
 
     TaggedAnimalAssessment.where(query_options)
   end

@@ -99,13 +99,9 @@ RSpec.describe TaggedAnimalAssessment, type: :model do
 
   describe 'shl case number' do
     include_examples 'validate values for field', :shl_case_number do
-      let(:valid_values) do
-        %w[SF10-3D SF10-10 SF1D-10]
-      end
+      let(:valid_values) { %w[SF10-3D SF10-10 SF1D-10] }
 
-      let(:invalid_values) do
-        %w[SX10-10 XS10-10 5]
-      end
+      let(:invalid_values) { %w[SX10-10 XS10-10 5] }
     end
   end
 end
