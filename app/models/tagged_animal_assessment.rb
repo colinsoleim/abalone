@@ -83,10 +83,9 @@ class TaggedAnimalAssessment < ApplicationRecord
   end
 
   def self.lengths_for_measurement(shl_case_number, measurement_date)
-    measurements =
-      select(:length).where(shl_case_number: shl_case_number).where(
-        measurement_date: measurement_date
-      )
+    measurements = select(:length)
+                   .where(shl_case_number: shl_case_number)
+                   .where(measurement_date: measurement_date)
 
     # group by bin (1cm). need constant of bins
     grouped_measurements = measurements.group_by { |record| record.length.to_i }
@@ -95,14 +94,12 @@ class TaggedAnimalAssessment < ApplicationRecord
     sample = measurements.count.to_f
 
     # total = total number of estimated animals from cohort (will need PopulationEstimate minus Mortality)
-    total =
-      Services::PopulationCountEstimator.run(shl_case_number, measurement_date)
+    total = Services::PopulationCountEstimator.run(shl_case_number, measurement_date)
 
     # for each group, num / count * total. will come up with a whole number, like 20. keep 20 with the size bin {"2cm" => 20}
-    extrapolated_grouped_measurements =
-      grouped_measurements.map do |group|
-        { group.first => (group.last.count / sample * total).round }
-      end
+    extrapolated_grouped_measurements = grouped_measurements.map do |group|
+      { group.first => (group.last.count / sample * total).round }
+    end
 
     # for each group, shovel in x.times to an array e.g. data = [20,20]
     extrapolated_lengths = []
