@@ -47,11 +47,11 @@ module Aggregates
         # => {date => [record1, record2,...recordn]}
         count = 1 # for tracking rolling average
 
-        hash.each_with_object(0) do |(k, val), rolling_sum|
+        hash.each_with_object({}) do |(k, val), rolling_sum|
           if val.count > 1
             raise # calc rolling average
             # potential for innacurate calc if they have two measurements on the same day
-            'Two measurements for the same day'
+            # 'Two measurements for the same day'
           end
 
           val = val.first
@@ -59,7 +59,10 @@ module Aggregates
           hash[k] = ((val.length + rolling_sum) / count.to_f).round(2).to_f
           # update tracking values for rolling avg
           count += 1
-          rolling_sum += val.length
+
+          # TODO: Lint/UselessAssignment: Useless assignment to variable - rolling_sum
+          # each_with_object cannot use immutable objects like numbers, true or false as the memo.
+          # rolling_sum += val.length
         end
         animal_growth[tag] = hash
       end

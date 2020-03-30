@@ -9,15 +9,18 @@ namespace :envvars do
       lines = capture("cat #{fetch(:deploy_to)}/.environment")
       lines.each_line do |line|
         # Remove the "export " keyword, we have no use for that here
-        line = line.sub /^export /, ""
+        line =
+          line.sub /^export /, ''
         # Clean up the input by removing line breaks, tabs etc
-        line = line.gsub /[\t\r\n\f]+/, ""
+        line = line.gsub /[\t\r\n\f]+/, ''
 
         # Grab the key and value from the line
-        key, value = line.split("=")
+        key, value = line.split('=')
 
         # Remove surrounding quotes if present
-        value = value.slice(1..-2) if value.start_with?('"') && value.end_with?('"')
+        if value.start_with?('"') && value.end_with?('"')
+          value = value.slice(1..-2)
+        end
 
         # Store the value in our :default_env copy
         environment.store(key, value)

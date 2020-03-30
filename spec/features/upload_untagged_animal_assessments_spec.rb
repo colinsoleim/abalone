@@ -2,11 +2,7 @@ require 'rails_helper'
 
 describe 'upload UntaggedAnimalAssessment category', type: :feature do
   let(:user) { create(:user) }
-  let(:valid_file) do
-    "#{
-      Rails.root
-    }/db/sample_data_files/untagged_animal_assessment/Untagged_assessment_03122018.csv"
-  end
+  let(:valid_file) { "#{Rails.root}/#{untagged_assessment_csv}" }
   let(:invalid_file) { "#{Rails.root}/spec/support/csv/invalid_headers.csv" }
   let(:incomplete_data_file) do
     "#{
@@ -81,7 +77,7 @@ describe 'upload UntaggedAnimalAssessment category', type: :feature do
       expect(ProcessedFile.count).to eq 2
       expect(processed_file.job_errors).to eq "Already processed a file on #{
            processed_file.created_at.strftime('%m/%d/%Y')
-         } with the same name: Untagged_assessment_03122018.csv. Data not imported!"
+         } with the same name: #{processed_file.filename}. Data not imported!"
       expect(processed_file.job_stats).to eq({})
       expect(page).to have_content expected_success_message
     end
@@ -105,5 +101,11 @@ describe 'upload UntaggedAnimalAssessment category', type: :feature do
       )
       expect(page).to have_content expected_success_message
     end
+  end
+
+  def untagged_assessment_csv
+    file_name = 'Untagged_assessment_03122018.csv'
+
+    "db/sample_data_files/untagged_animal_assessment/#{file_name}"
   end
 end

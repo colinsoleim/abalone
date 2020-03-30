@@ -2,11 +2,7 @@ require 'rails_helper'
 
 describe 'upload TaggedAnimalAssessment category', type: :feature do
   let(:user) { create(:user) }
-  let(:valid_file) do
-    "#{
-      Rails.root
-    }/db/sample_data_files/tagged_animal_assessment/Tagged_assessment_12172018 (original).csv"
-  end
+  let(:valid_file) { "#{Rails.root}/#{tagged_assessment_csv}" }
   let(:second_valid_file) do
     "#{Rails.root}/spec/support/csv/Tagged_assessment_03172018.csv"
   end
@@ -81,7 +77,7 @@ describe 'upload TaggedAnimalAssessment category', type: :feature do
       expect(ProcessedFile.count).to eq 2
       expect(processed_file.job_errors).to eq "Already processed a file on #{
            processed_file.created_at.strftime('%m/%d/%Y')
-         } with the same name: Tagged_assessment_12172018 (original).csv. Data not imported!"
+         } with the same name: #{processed_file.filename}. Data not imported!"
       expect(processed_file.job_stats).to eq({})
       expect(page).to have_content expected_success_message
     end
@@ -105,5 +101,11 @@ describe 'upload TaggedAnimalAssessment category', type: :feature do
       )
       expect(page).to have_content expected_success_message
     end
+  end
+
+  def tagged_assessment_csv
+    file_name = 'Tagged_assessment_12172018 (original).csv'
+
+    "db/sample_data_files/tagged_animal_assessment/#{file_name}"
   end
 end

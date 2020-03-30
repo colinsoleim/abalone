@@ -10,7 +10,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '~> 4.3'
 gem 'sass-rails', '~> 5.0'
-gem 'uglifier',   '>= 1.3.0'
+gem 'uglifier', '>= 1.3.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
@@ -32,7 +32,7 @@ group :development, :test do
   gem 'byebug'
   gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.8'
-  gem "factory_bot_rails"
+  gem 'factory_bot_rails'
   gem 'rubocop-rails'
   gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
   gem 'shoulda-matchers'
@@ -46,12 +46,12 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
 
-  gem 'annotate',                      require: false
-  gem 'capistrano',         '~> 3.11', require: false
-  gem 'capistrano-bundler', '~> 1.6',  require: false
-  gem 'capistrano-rvm',     '~> 0.1',  require: false
-  gem 'capistrano-rails',   '~> 1.4',  require: false
-  gem 'capistrano3-puma',   '~> 4.0',  require: false
+  gem 'annotate', require: false
+  gem 'capistrano', '~> 3.11', require: false
+  gem 'capistrano-bundler', '~> 1.6', require: false
+  gem 'capistrano-rvm', '~> 0.1', require: false
+  gem 'capistrano-rails', '~> 1.4', require: false
+  gem 'capistrano3-puma', '~> 4.0', require: false
 end
 
 #  Excel and CSV support

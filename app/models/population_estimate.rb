@@ -78,7 +78,7 @@ class PopulationEstimate < ApplicationRecord
       :lifestage,
       "#{
         lifestage
-      } does not match the valid lifestages: embryos, larvae, juvenile, or adult"
+      } does not match the valid lifestages: embryos, larvae, juvenile, adult"
     )
   end
 end
